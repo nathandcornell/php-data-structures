@@ -12,7 +12,7 @@ class BinarySearchTree {
         $this->head = $head;
     }
 
-    public function depthFirstSearch(int $needle, bool $depthFirst=true) {
+    public function search(int $needle, bool $depthFirst=true) {
         if (! $this->head) { return null; }
 
         $toVisit = ($depthFirst) ? new Stack() : new Queue();
@@ -46,25 +46,58 @@ class BinarySearchTree {
      *
      * return array(int)
      */
-    public function traverse(bool $depthFirst=true) {
+    public function preOrderTraverse() {
         if ($this->head === null) { return false; }
 
-        $toVisit = ($depthFirst) ? new Stack() : new Queue();
+        $toVisit = new Stack();
+        $visited = [];
+
+        $current = $this->head;
+
+        # Start by finding the leftmost node from the head, stacking the other
+        # left-nodes behind it.
+        while ($current !== null) {
+            $toVisit->push($current);
+            $current = $current->left;
+        }
+
+        # Now go through each left node, adding them to the array then adding
+        # any right children and all their left nodes to the stack to be 
+        # processed.
+        while (! $toVisit->isEmpty()) {
+            $current = $toVisit->pop();
+            $visited[] = $current->value;
+
+            if ($current->right !== null) {
+                $current = $current->right;
+
+                while ($current != null) {
+                    $toVisit->push($current);
+                    $current = $current->left;
+                }
+            }
+        }
+
+        return $visited;
+    }
+
+    public function inOrderTraverse() {
+        if ($this->head === null) { return false; }
+
+        $toVisit = new Queue();
         $toVisit->push($this->head);
         $visited = [];
 
         while (! $toVisit->isEmpty()) {
             $current = $toVisit->pop();
+            $visited[] = $current->value;
 
             if ($current->left !== null) {
                 $toVisit->push($current->left);
             }
-
             if ($current->right !== null) {
                 $toVisit->push($current->right);
             }
-
-            $visited[] = $current->value;
         }
 
         return $visited;

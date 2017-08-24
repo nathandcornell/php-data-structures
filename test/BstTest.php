@@ -8,6 +8,18 @@ class BstTest extends TestCase {
 
     const TEST_NUMBERS = [4, 9, 2, 5, 8, 1, 3, 11];
 
+    private function initBst() {
+        $bstNode = new BinarySearchTreeNode(self::TEST_NUMBERS[0]);
+
+        foreach (self::TEST_NUMBERS as $index => $number) {
+            if ($index == 0) { continue; }
+
+            $bstNode->add(new BinarySearchTreeNode($number));
+        }
+
+        return new BinarySearchTree($bstNode);
+    }
+
     public function testCreate() {
         $bstNode = new BinarySearchTreeNode(self::TEST_NUMBERS[0]);
         $bst = new BinarySearchTree($bstNode);
@@ -40,6 +52,27 @@ class BstTest extends TestCase {
         # Add right child of left child
         $bstNode->add(new BinarySearchTreeNode(self::TEST_NUMBERS[6]));
         $this->assertEquals(self::TEST_NUMBERS[6], $bstNode->left->right->value);
+    }
+
+    public function testPreOrderTraverse() {
+        $bst = $this->initBst();
+
+        $ordered = $bst->preOrderTraverse();
+
+        $original = self::TEST_NUMBERS;
+        sort($original);
+
+        $this->assertEquals($ordered, $original);
+    }
+
+    public function testInOrderTraverse() {
+        $bst = $this->initBst();
+
+        $inOrder = $bst->inOrderTraverse();
+
+        $original = [4,2,9,1,3,5,11,8];
+
+        $this->assertEquals($original, $inOrder);
     }
 }
 ?>
