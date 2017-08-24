@@ -74,5 +74,21 @@ class BstTest extends TestCase {
 
         $this->assertEquals($original, $inOrder);
     }
+
+    public function testSearch() {
+        $bst = $this->initBst();
+
+        $this->assertEquals(
+            self::TEST_NUMBERS[3], 
+            $bst->search(self::TEST_NUMBERS[3], false)->value
+        );
+
+        $this->assertEquals(
+            self::TEST_NUMBERS[3], 
+            $bst->search(self::TEST_NUMBERS[3], false)->value
+        );
+
+        $this->assertNull($bst->search(-1));
+    }
 }
 ?>

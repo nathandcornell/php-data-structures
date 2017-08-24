@@ -25,11 +25,11 @@ class BinarySearchTree {
                 return $current;
             }
 
-            if ($current < $needle && $current->right != null) { 
+            if ($current->value < $needle && $current->right != null) { 
                 $toVisit->push($current->right);
             }
 
-            if ($current > $needle && $current->left != null) {
+            if ($current->value > $needle && $current->left != null) {
                 $toVisit->push($current->left);
             }
         }
